@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Transparency Dashboard — BebaMart Voting')
+@section('title', 'Transparency Dashboard — Buganda Tourism Board')
 
 @section('content')
 <div class="pt-20" style="background: linear-gradient(135deg, #07071a 0%, #0d0d2b 100%);">
@@ -9,7 +9,7 @@
             <div class="w-8 h-px" style="background: #d4941a;"></div> Fully Transparent <div class="w-8 h-px" style="background: #d4941a;"></div>
         </div>
         <h1 class="text-5xl md:text-6xl font-light text-white mb-4" style="font-family: 'Cormorant Garamond', serif;">Transparency Dashboard</h1>
-        <p class="text-gray-400 text-sm max-w-2xl mx-auto">Every vote is logged and publicly verifiable. BebaMart Voting System is committed to fair, transparent elections.</p>
+        <p class="text-gray-400 text-sm max-w-2xl mx-auto">Every vote is logged and publicly verifiable. Buganda Tourism Board is committed to fair, transparent elections.</p>
     </div>
     <div class="h-0.5" style="background: linear-gradient(90deg, transparent, #d4941a, #e6b030, #d4941a, transparent);"></div>
 </div>

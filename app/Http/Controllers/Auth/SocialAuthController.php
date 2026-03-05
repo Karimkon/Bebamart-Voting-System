@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
@@ -103,8 +104,14 @@ class SocialAuthController extends Controller
         try {
             $user = $this->findOrCreateUser($socialUser, $provider);
         } catch (\Throwable $e) {
+            Log::error('Social auth user create/find failed', [
+                'provider' => $provider,
+                'email'    => $socialUser->getEmail(),
+                'error'    => $e->getMessage(),
+                'file'     => $e->getFile() . ':' . $e->getLine(),
+            ]);
             return redirect()->route('login')
-                ->with('error', 'Unable to create user account. Please contact support.');
+                ->with('error', 'Login failed: ' . $e->getMessage());
         }
 
         if (!$user) {
@@ -150,50 +157,54 @@ class SocialAuthController extends Controller
         // Normalize provider name for database
         $providerName = str_replace('-oauth-2', '', $provider);
 
+        // Truncate token — OAuth tokens can exceed VARCHAR(255) and crash MySQL strict mode
+        $token = $socialUser->token ? substr($socialUser->token, 0, 500) : null;
+
         // Check if user exists with this provider ID
         $user = User::where('provider', $providerName)
-            ->where('provider_id', $socialUser->getId())
+            ->where('provider_id', (string) $socialUser->getId())
             ->first();
 
         if ($user) {
             // Update user info
             $user->update([
-                'name' => $socialUser->getName() ?? $user->name,
-                'email' => $socialUser->getEmail() ?? $user->email,
-                'avatar' => $socialUser->getAvatar() ?? $user->avatar,
-                'provider_token' => $socialUser->token,
+                'name'           => $socialUser->getName() ?? $user->name,
+                'email'          => $socialUser->getEmail() ?? $user->email,
+                'avatar'         => $socialUser->getAvatar() ?? $user->avatar,
+                'provider_token' => $token,
             ]);
 
             return $user;
         }
 
         // Check if user exists with this email
-        $user = User::where('email', $socialUser->getEmail())->first();
+        if ($socialUser->getEmail()) {
+            $user = User::where('email', $socialUser->getEmail())->first();
 
-        if ($user) {
-            // Link this social account to existing user
-            $user->update([
-                'provider' => $providerName,
-                'provider_id' => $socialUser->getId(),
-                'provider_token' => $socialUser->token,
-                'avatar' => $socialUser->getAvatar() ?? $user->avatar,
-            ]);
+            if ($user) {
+                // Link this social account to existing user
+                $user->update([
+                    'provider'       => $providerName,
+                    'provider_id'    => (string) $socialUser->getId(),
+                    'provider_token' => $token,
+                    'avatar'         => $socialUser->getAvatar() ?? $user->avatar,
+                ]);
 
-            return $user;
+                return $user;
+            }
         }
 
         // Create new user
         return User::create([
-            'name' => $socialUser->getName(),
-            'email' => $socialUser->getEmail(),
-            'provider' => $providerName,
-            'provider_id' => $socialUser->getId(),
-            'provider_token' => $socialUser->token,
-            'avatar' => $socialUser->getAvatar(),
-            'role' => 'user',
-            'is_active' => true,
-            'password' => bcrypt(Str::random(32)), // Random password since we use social login
-            'email_verified_at' => now(), // Social accounts are pre-verified
+            'name'           => $socialUser->getName() ?? 'User',
+            'email'          => $socialUser->getEmail(),
+            'provider'       => $providerName,
+            'provider_id'    => (string) $socialUser->getId(),
+            'provider_token' => $token,
+            'avatar'         => $socialUser->getAvatar(),
+            'role'           => 'user',
+            'is_active'      => true,
+            'password'       => bcrypt(Str::random(32)),
         ]);
     }
 

@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'BebaMart Voting') — Africa's Premier Voting Platform</title>
-    <meta name="description" content="@yield('description', 'BebaMart Voting System — transparent, secure online voting for beauty pageants, tourism competitions, talent shows and awards across Africa.')">
+    <title>@yield('title', 'Buganda Tourism Board') — Uganda's Official Tourism Voting Platform</title>
+    <meta name="description" content="@yield('description', 'Buganda Tourism Board — transparent, secure online voting for beauty pageants, tourism competitions, talent shows and awards across Africa.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -26,7 +26,7 @@
                     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10 h-10 rounded-full object-cover">
                 </div>
                 <div>
-                    <span class="text-white font-bold text-xl tracking-wider" style="font-family: 'Cormorant Garamond', serif;">BebaMart Votes</span>
+                    <span class="text-white font-bold text-xl tracking-wider" style="font-family: 'Cormorant Garamond', serif;">Buganda Tourism Board</span>
                     <div class="text-xs tracking-widest uppercase" style="color: #e6b030; font-size: 9px; letter-spacing: 0.2em;">Africa's Voting Platform</div>
                 </div>
             </a>
@@ -194,7 +194,7 @@
                     <div class="w-10 h-10 flex items-center justify-center">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10 h-10 rounded-full object-cover">
                     </div>
-                    <span class="text-white font-bold text-xl" style="font-family: 'Cormorant Garamond', serif;">BebaMart Votes</span>
+                    <span class="text-white font-bold text-xl" style="font-family: 'Cormorant Garamond', serif;">Buganda Tourism Board</span>
                 </div>
                 <p class="text-gray-400 text-sm leading-relaxed max-w-sm">Africa's most trusted voting platform for beauty pageants, tourism competitions, talent shows and awards. Transparent. Secure. Elegant.</p>
                 <div class="mt-4 text-xs text-gray-500">Sponsored by <span style="color: #e6b030;">BebeMart</span> — Africa's E-Commerce Leader</div>
@@ -220,7 +220,7 @@
             </div>
         </div>
         <div class="pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
-            <span>© {{ date('Y') }} BebaMart Voting™ — A Product of BebeMart | bugandavotes.com</span>
+            <span>© {{ date('Y') }} Buganda Tourism Board™ | Buganda Tourism Board | bugandavotes.com</span>
             <div class="flex gap-6 mt-4 md:mt-0">
                 <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
                 <a href="#" class="hover:text-white transition-colors">Terms of Use</a>

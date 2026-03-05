@@ -2,7 +2,7 @@
 
 @section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
-@section('page-subtitle', 'BebaMart Voting System overview')
+@section('page-subtitle', 'Buganda Tourism Board overview')
 
 @section('content')
 @php

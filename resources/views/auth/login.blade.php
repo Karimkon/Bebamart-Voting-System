@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sign In — BebaMart Voting')
+@section('title', 'Sign In — Buganda Tourism Board')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center py-20 px-4" style="background: linear-gradient(135deg, #07071a 0%, #0d0d2b 100%);">
@@ -11,7 +11,7 @@
             <a href="{{ route('home') }}" class="inline-flex flex-col items-center gap-3">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-20 h-20 rounded-full object-cover">
                 <div class="text-3xl font-light text-white" style="font-family: 'Cormorant Garamond', serif;">
-                    BebaMart <span style="color: #d4941a;">Voting</span>
+                    Buganda <span style="color: #d4941a;">Tourism</span>
                 </div>
             </a>
             <p class="text-gray-400 text-sm mt-2">Sign in to cast your votes</p>

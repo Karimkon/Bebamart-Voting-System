@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $competition->name . ' — Results — BebaMart Voting')
+@section('title', $competition->name . ' — Results — Buganda Tourism Board')
 
 @section('content')
 <div class="pt-20" style="background: linear-gradient(135deg, #07071a 0%, #0d0d2b 100%);">

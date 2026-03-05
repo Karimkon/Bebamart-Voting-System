@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Login — BebaMart Voting</title>
+    <title>Admin Login — Buganda Tourism Board</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, #07071a 0%, #0d0d2b 100%); font-family: 'Montserrat', sans-serif;">
@@ -15,7 +15,7 @@
         <a href="{{ route('home') }}" class="inline-flex flex-col items-center gap-3">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-20 h-20 rounded-full object-cover">
             <div class="text-3xl font-light text-white" style="font-family: 'Cormorant Garamond', serif;">
-                BebaMart <span style="color: #d4941a;">Voting</span>
+                Buganda <span style="color: #d4941a;">Tourism</span>
             </div>
         </a>
         <p class="text-xs tracking-widest uppercase mt-1" style="color: #e6b030;">Admin Panel</p>

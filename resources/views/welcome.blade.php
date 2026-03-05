@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'BebaMart Voting System — Africa\'s Premier Voting Platform')
+@section('title', 'Buganda Tourism Board — Africa\'s Premier Voting Platform')
 
 @section('content')
 
@@ -137,7 +137,7 @@
 <section class="py-20 text-white" style="background: linear-gradient(135deg, #0d0d2b, #1a1a4e);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-4xl font-light mb-6" style="font-family: 'Cormorant Garamond', serif;">Built on Trust &amp; Transparency</h2>
-        <p class="text-gray-300 max-w-2xl mx-auto mb-12 text-sm leading-relaxed">Every single vote is logged, audited, and publicly verifiable. BebaMart Voting System is Africa's most transparent voting platform.</p>
+        <p class="text-gray-300 max-w-2xl mx-auto mb-12 text-sm leading-relaxed">Every single vote is logged, audited, and publicly verifiable. Buganda Tourism Board is Africa's most transparent voting platform.</p>
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
             @foreach([['Social Login Only','No anonymous votes'],['IP Monitoring','Fraud detection'],['Device Fingerprint','Multi-account detection'],['Full Audit Trail','Every vote logged'],['1 Vote/Day','Per contestant']] as $t)
             <div class="p-4 border border-white/10 text-center" style="background: rgba(255,255,255,0.05);">
