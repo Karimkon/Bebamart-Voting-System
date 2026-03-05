@@ -50,6 +50,12 @@ class Contestant extends Model
         return $this->belongsTo(County::class, 'county_id');
     }
 
+    /** @deprecated Alias for county() — kept for backward-compat with old production code */
+    public function parish()
+    {
+        return $this->belongsTo(County::class, 'county_id');
+    }
+
     public function region()
     {
         return $this->belongsTo(Region::class);

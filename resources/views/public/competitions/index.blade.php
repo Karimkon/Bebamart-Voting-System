@@ -26,7 +26,7 @@
                class="group block bg-white border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                 <div class="relative h-56 overflow-hidden" style="background: linear-gradient(135deg, #0d0d2b, #1a1a4e);">
                     @if($competition->banner_image)
-                        <img src="{{ Storage::url($competition->banner_image) }}" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset($competition->banner_image) }}" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700">
                     @else
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="text-6xl opacity-10" style="font-family: 'Cormorant Garamond', serif; color: #e6b030;">B</div>

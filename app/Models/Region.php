@@ -31,6 +31,12 @@ class Region extends Model
         return $this->hasMany(County::class);
     }
 
+    /** @deprecated Alias for counties() — kept for backward-compat with old production code */
+    public function parishes()
+    {
+        return $this->hasMany(County::class);
+    }
+
     /**
      * Get the contestants for the region.
      */

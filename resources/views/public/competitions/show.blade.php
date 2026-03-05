@@ -5,75 +5,61 @@
 @section('content')
 <div x-data="votingPage()" x-init="init()">
 
-{{-- COMPETITION HERO --}}
-<div class="pt-16 sm:pt-20 pb-0 text-white" style="background: linear-gradient(135deg, #07071a 0%, #0d0d2b 70%, #1a1a4e 100%);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="flex flex-col lg:flex-row gap-10 items-start">
-            <div class="flex-1">
-                <div class="flex items-center gap-2 mb-4">
-                    <a href="{{ route('competitions.index') }}" class="text-gray-400 hover:text-white text-xs tracking-widest uppercase transition-colors">Competitions</a>
+{{-- COMPETITION HERO (banner used as background overlay) --}}
+@php
+$heroBg = $competition->banner_image
+    ? 'background: linear-gradient(rgba(7,7,26,0.80), rgba(13,13,43,0.96)), url(\'' . asset($competition->banner_image) . '\') center top / cover no-repeat;'
+    : 'background: linear-gradient(135deg, #07071a 0%, #0d0d2b 70%, #1a1a4e 100%);';
+@endphp
+<div class="pt-16 sm:pt-20 pb-0 text-white" style="{{ $heroBg }}">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            {{-- Left: type badge + title + stats --}}
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                    <a href="{{ route('competitions.index') }}" class="text-gray-500 hover:text-white text-xs tracking-widest uppercase transition-colors">Competitions</a>
                     <span class="text-gray-600">/</span>
-                    <span class="text-gray-400 text-xs tracking-widest uppercase">{{ $competition->name }}</span>
+                    <span class="inline-block text-xs px-2 py-0.5 font-semibold tracking-widest uppercase" style="background: rgba(230,176,48,0.2); color: #e6b030; border: 1px solid rgba(230,176,48,0.3);">{{ ucfirst(str_replace('_', ' ', $competition->type)) }}</span>
                 </div>
-                <div class="inline-block text-xs px-3 py-1.5 font-semibold tracking-widest uppercase mb-4" style="background: rgba(230,176,48,0.2); color: #e6b030; border: 1px solid rgba(230,176,48,0.3);">
-                    {{ ucfirst(str_replace('_', ' ', $competition->type)) }}
-                </div>
-                <h1 class="text-4xl md:text-6xl font-light mb-4" style="font-family: 'Cormorant Garamond', serif;">{{ $competition->name }}</h1>
-                <p class="text-gray-400 max-w-xl leading-relaxed text-sm mb-6">{{ $competition->description }}</p>
-                <div class="flex flex-wrap gap-6 text-sm">
-                    <div class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-4 h-4" style="color: #e6b030;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        <span id="total-contestants">{{ $competition->contestants()->where('status','active')->count() }}</span> Contestants
-                    </div>
-                    <div class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-4 h-4" style="color: #e6b030;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span id="total-votes">{{ number_format($competition->total_votes) }}</span> Votes Cast
-                    </div>
+                <h1 class="text-2xl md:text-3xl font-light mb-2 leading-tight" style="font-family: 'Cormorant Garamond', serif;">{{ $competition->name }}</h1>
+                <div class="flex flex-wrap items-center gap-4 text-xs text-gray-400">
+                    <span class="flex items-center gap-1">
+                        <svg style="width:14px;height:14px;flex-shrink:0;color:#e6b030;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span id="total-contestants">{{ $competition->contestants()->where('status','active')->count() }}</span> contestants
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <svg style="width:14px;height:14px;flex-shrink:0;color:#e6b030;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span id="total-votes">{{ number_format($competition->total_votes) }}</span> votes
+                    </span>
                     @if($competition->end_date)
-                    <div class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-4 h-4" style="color: #e6b030;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        Ends {{ \Carbon\Carbon::parse($competition->end_date)->format('D, d M Y') }}
-                    </div>
+                    <span class="flex items-center gap-1">
+                        <svg style="width:14px;height:14px;flex-shrink:0;color:#e6b030;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        Ends {{ \Carbon\Carbon::parse($competition->end_date)->format('d M Y') }}
+                    </span>
+                    @endif
+                    @if($competition->voting_enabled)
+                    <span class="flex items-center gap-1 font-semibold text-green-400">
+                        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;"></span> VOTING LIVE
+                    </span>
                     @endif
                 </div>
             </div>
 
-            {{-- Countdown Timer --}}
+            {{-- Right: compact countdown --}}
             @if($competition->end_date && \Carbon\Carbon::parse($competition->end_date)->isFuture())
-            <div class="bg-white/5 border border-white/10 p-4 sm:p-6 text-center w-full sm:min-w-64"
+            <div class="flex-shrink-0 flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2"
                  x-data="countdown('{{ \Carbon\Carbon::parse($competition->end_date)->toISOString() }}')"
                  x-init="start()">
-                <div class="text-xs tracking-widest uppercase text-gray-400 mb-4">Voting Ends In</div>
-                <div class="grid grid-cols-4 gap-3">
-                    <div class="text-center">
-                        <div class="text-4xl font-bold" style="font-family: 'Cormorant Garamond', serif; color: #e6b030;" x-text="days">00</div>
-                        <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Days</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold" style="font-family: 'Cormorant Garamond', serif; color: #e6b030;" x-text="hours">00</div>
-                        <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Hours</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold" style="font-family: 'Cormorant Garamond', serif; color: #e6b030;" x-text="minutes">00</div>
-                        <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Mins</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold" style="font-family: 'Cormorant Garamond', serif; color: #e6b030;" x-text="seconds">00</div>
-                        <div class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Secs</div>
-                    </div>
+                <span class="text-xs text-gray-500 uppercase tracking-wide hidden lg:block">Ends in</span>
+                <div class="flex items-center gap-1.5 text-center">
+                    <div><div class="text-lg font-bold leading-none" style="color: #e6b030;" x-text="days">00</div><div class="text-xs text-gray-500">d</div></div>
+                    <span class="text-gray-600 text-sm">:</span>
+                    <div><div class="text-lg font-bold leading-none" style="color: #e6b030;" x-text="hours">00</div><div class="text-xs text-gray-500">h</div></div>
+                    <span class="text-gray-600 text-sm">:</span>
+                    <div><div class="text-lg font-bold leading-none" style="color: #e6b030;" x-text="minutes">00</div><div class="text-xs text-gray-500">m</div></div>
+                    <span class="text-gray-600 text-sm">:</span>
+                    <div><div class="text-lg font-bold leading-none" style="color: #e6b030;" x-text="seconds">00</div><div class="text-xs text-gray-500">s</div></div>
                 </div>
-                @if($competition->voting_enabled)
-                <div class="mt-4 flex items-center justify-center gap-2 text-xs text-green-400">
-                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                    VOTING IS LIVE — YOU ONLY VOTE ONCE EVERY DAY
-                </div>
-                @endif
-                {{-- Premium upsell --}}
-                <a href="{{ route('premium.show', $competition->slug) }}"
-                   class="mt-3 flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2 hover:opacity-90 transition-opacity"
-                   style="background: rgba(230,176,48,0.15); border: 1px solid rgba(230,176,48,0.4); color: #e6b030;">
-                    ⭐ Go Premium — 10 votes/day
-                </a>
             </div>
             @endif
         </div>

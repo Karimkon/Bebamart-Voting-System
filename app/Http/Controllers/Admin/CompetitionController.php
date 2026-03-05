@@ -7,6 +7,7 @@ use App\Models\Competition;
 use App\Models\AdminLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class CompetitionController extends Controller
 {
@@ -32,7 +33,13 @@ class CompetitionController extends Controller
             'number_of_counties' => 'required|integer|min:1',
             'contestants_per_county' => 'required|integer|min:1',
             'number_of_rounds' => 'required|integer|min:1',
+            'banner_image' => 'nullable|image|max:5120',
         ]);
+
+        if ($request->hasFile('banner_image')) {
+            $path = $request->file('banner_image')->store('competitions', 'public');
+            $validated['banner_image'] = 'storage/' . $path;
+        }
 
         $validated['slug'] = Str::slug($validated['name']);
         $validated['status'] = 'draft';
@@ -74,7 +81,16 @@ class CompetitionController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'status' => 'required|in:draft,upcoming,active,completed,archived',
+            'banner_image' => 'nullable|image|max:5120',
         ]);
+
+        if ($request->hasFile('banner_image')) {
+            if ($competition->banner_image) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $competition->banner_image));
+            }
+            $path = $request->file('banner_image')->store('competitions', 'public');
+            $validated['banner_image'] = 'storage/' . $path;
+        }
 
         $competition->update($validated);
 

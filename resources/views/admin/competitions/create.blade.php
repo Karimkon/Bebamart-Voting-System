@@ -11,7 +11,7 @@
         &larr; Back to Competitions
     </a>
 
-    <form action="{{ route('admin.competitions.store') }}" method="POST" class="space-y-6">
+    <form action="{{ route('admin.competitions.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
 
         {{-- Basic Info --}}
@@ -106,6 +106,29 @@
                 Total contestants = counties × contestants per county.
                 With the values above: <strong id="totalCalc">{{ old('number_of_counties', 53) * old('contestants_per_county', 3) }}</strong> contestants.
             </div>
+        </div>
+
+        {{-- Banner Image --}}
+        <div class="bg-white rounded-xl border border-gray-100 p-6">
+            <h3 class="font-semibold text-gray-900 mb-1">Banner / Poster Image</h3>
+            <p class="text-xs text-gray-400 mb-4">This image appears at the top of the public competition page. Recommended: 1200×500px or wider.</p>
+            <div x-data="{ preview: null }">
+                <label class="cursor-pointer block border-2 border-dashed border-gray-200 hover:border-[#d4941a] transition-colors rounded-lg overflow-hidden">
+                    <input type="file" name="banner_image" accept="image/*" class="hidden"
+                           @change="preview = URL.createObjectURL($event.target.files[0])">
+                    <template x-if="preview">
+                        <img :src="preview" class="w-full h-48 object-cover">
+                    </template>
+                    <template x-if="!preview">
+                        <div class="h-32 flex flex-col items-center justify-center text-gray-400 gap-2">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <span class="text-sm">Click to upload banner image</span>
+                            <span class="text-xs">JPG, PNG up to 5MB</span>
+                        </div>
+                    </template>
+                </label>
+            </div>
+            @error('banner_image')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
         </div>
 
         {{-- Submit --}}
