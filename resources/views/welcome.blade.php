@@ -13,7 +13,7 @@
     </div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-20">
         <div class="reveal inline-flex items-center gap-2 px-4 py-2 mb-8 border border-white/10 text-xs tracking-widest uppercase text-gray-400" style="background: rgba(255,255,255,0.05);">
-            <span style="color: #e6b030;">&#9733;</span> Presented by BebeMart <span style="color: #e6b030;">&#9733;</span>
+            <span style="color: #e6b030;">&#9733;</span> Presented by Buganda Tourism Board <span style="color: #e6b030;">&#9733;</span>
         </div>
         <h1 class="reveal reveal-delay-1 text-5xl sm:text-6xl md:text-8xl font-light text-white leading-none tracking-tight mb-6" style="font-family: 'Cormorant Garamond', serif;">
             Vote for
@@ -50,6 +50,100 @@
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500">
         <span class="text-xs tracking-widest uppercase">Scroll</span>
         <div class="w-px h-12" style="background: linear-gradient(to bottom, #d4941a, transparent);"></div>
+    </div>
+</section>
+
+{{-- FEATURED EVENT: MISS TOURISM BUGANDA KINGDOM --}}
+<section class="relative overflow-hidden" style="background: linear-gradient(180deg, #07071a 0%, #0d0d2b 100%);">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[540px]">
+
+            {{-- Poster Image --}}
+            <div class="relative overflow-hidden min-h-72 lg:min-h-full">
+                <img src="{{ asset('images/miss-tourism-poster.jpg') }}"
+                     alt="Miss Tourism Buganda Kingdom 2026 Official Launch"
+                     class="w-full h-full object-cover object-top"
+                     style="min-height: 320px;">
+                {{-- Right-side gradient blending into content --}}
+                <div class="absolute inset-y-0 right-0 w-1/2 pointer-events-none hidden lg:block"
+                     style="background: linear-gradient(to right, transparent, #0d0d2b);"></div>
+            </div>
+
+            {{-- Launch Details --}}
+            <div class="flex flex-col justify-center px-8 lg:px-16 py-16 text-white">
+                <div class="inline-flex items-center gap-3 text-xs tracking-widest uppercase mb-4 font-semibold" style="color: #d4941a;">
+                    <div class="w-8 h-px" style="background: #d4941a;"></div>
+                    Official Launch
+                    <div class="w-8 h-px" style="background: #d4941a;"></div>
+                </div>
+
+                <h2 class="text-4xl lg:text-5xl font-light mb-4 leading-snug" style="font-family: 'Cormorant Garamond', serif;">
+                    Miss Tourism<br>
+                    <span style="background: linear-gradient(90deg, #d4941a, #f4dda0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Buganda Kingdom</span>
+                </h2>
+                <p class="text-gray-400 text-sm font-light tracking-widest uppercase mb-6">Travel &bull; Beauty &bull; Tourism</p>
+
+                <p class="text-gray-300 text-sm leading-relaxed mb-8 max-w-md">
+                    Celebrating beauty, culture and tourism excellence across Buganda. The official launch of Uganda's most prestigious tourism competition promoting our rich heritage to the world.
+                </p>
+
+                {{-- Event Info --}}
+                <div class="space-y-3 mb-8">
+                    <div class="flex items-center gap-3 text-sm">
+                        <span class="w-5 text-center" style="color: #d4941a;">&#128197;</span>
+                        <span class="text-gray-200">Thursday, 12th March 2026</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm">
+                        <span class="w-5 text-center" style="color: #d4941a;">&#128336;</span>
+                        <span class="text-gray-200">7:30 AM</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm">
+                        <span class="w-5 text-center" style="color: #d4941a;">&#128205;</span>
+                        <span class="text-gray-200">Buganda Heritage and Tourism Board</span>
+                    </div>
+                </div>
+
+                {{-- Countdown --}}
+                <div x-data="{
+                    d: 0, h: 0, m: 0, s: 0,
+                    get units() { return [[this.d,'Days'],[this.h,'Hrs'],[this.m,'Min'],[this.s,'Sec']]; },
+                    init() {
+                        const tick = () => {
+                            let diff = Math.max(0, new Date('2026-03-12T07:30:00') - new Date());
+                            this.d = Math.floor(diff / 86400000);
+                            this.h = Math.floor((diff % 86400000) / 3600000);
+                            this.m = Math.floor((diff % 3600000) / 60000);
+                            this.s = Math.floor((diff % 60000) / 1000);
+                        };
+                        tick(); setInterval(tick, 1000);
+                    }
+                }" class="mb-8">
+                    <div class="text-xs tracking-widest uppercase text-gray-500 mb-3">Countdown to Launch</div>
+                    <div class="flex gap-2 sm:gap-3">
+                        <template x-for="u in units" :key="u[1]">
+                            <div class="flex-1 py-3 text-center border border-white/20"
+                                 style="background: rgba(212,148,26,0.08);">
+                                <div class="text-2xl font-bold" style="color: #e6b030; font-family: 'Cormorant Garamond', serif;"
+                                     x-text="String(u[0]).padStart(2,'0')"></div>
+                                <div class="text-xs text-gray-400 uppercase tracking-widest mt-1" x-text="u[1]"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="{{ route('competitions.index') }}"
+                       class="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold tracking-widest uppercase text-[#0d0d2b] hover:opacity-90 transition-all"
+                       style="background: linear-gradient(135deg, #d4941a, #e6b030);">
+                        &#10003; Vote Now
+                    </a>
+                    <a href="{{ route('competitions.index') }}"
+                       class="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold tracking-widest uppercase text-white border border-white/20 hover:bg-white/10 transition-all">
+                        View Competition &#8594;
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
