@@ -29,8 +29,8 @@ class CompetitionController extends Controller
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'number_of_parishes' => 'required|integer|min:1',
-            'contestants_per_parish' => 'required|integer|min:1',
+            'number_of_counties' => 'required|integer|min:1',
+            'contestants_per_county' => 'required|integer|min:1',
             'number_of_rounds' => 'required|integer|min:1',
         ]);
 
@@ -40,8 +40,8 @@ class CompetitionController extends Controller
         $competition = Competition::create($validated);
 
         $competition->settings()->create([
-            'number_of_parishes' => $validated['number_of_parishes'],
-            'contestants_per_parish' => $validated['contestants_per_parish'],
+            'number_of_counties' => $validated['number_of_counties'],
+            'contestants_per_county' => $validated['contestants_per_county'],
             'number_of_rounds' => $validated['number_of_rounds'],
             'votes_per_user_per_day' => 1,
             'votes_per_contestant_per_day' => 1,
@@ -79,10 +79,10 @@ class CompetitionController extends Controller
         $competition->update($validated);
 
         // Update settings if provided
-        if ($request->filled('number_of_parishes') && $competition->settings) {
+        if ($request->filled('number_of_counties') && $competition->settings) {
             $competition->settings->update([
-                'number_of_parishes' => $request->number_of_parishes,
-                'contestants_per_parish' => $request->contestants_per_parish,
+                'number_of_counties' => $request->number_of_counties,
+                'contestants_per_county' => $request->contestants_per_county,
                 'votes_per_user_per_day' => $request->votes_per_user_per_day ?? 1,
             ]);
         }

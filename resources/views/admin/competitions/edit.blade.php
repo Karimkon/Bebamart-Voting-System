@@ -73,13 +73,13 @@
             <p class="text-xs text-gray-400 mb-5">Changing these after contestants are added may cause inconsistencies.</p>
             <div class="grid grid-cols-3 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Number of Parishes</label>
-                    <input type="number" name="number_of_parishes" value="{{ old('number_of_parishes', $competition->settings->number_of_parishes) }}" min="1"
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Number of Countyes</label>
+                    <input type="number" name="number_of_counties" value="{{ old('number_of_counties', $competition->settings->number_of_counties) }}" min="1"
                            class="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-[#d4941a] transition-colors">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Contestants per Parish</label>
-                    <input type="number" name="contestants_per_parish" value="{{ old('contestants_per_parish', $competition->settings->contestants_per_parish) }}" min="1"
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Contestants per County</label>
+                    <input type="number" name="contestants_per_county" value="{{ old('contestants_per_county', $competition->settings->contestants_per_county) }}" min="1"
                            class="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-[#d4941a] transition-colors">
                 </div>
                 <div>

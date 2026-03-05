@@ -68,6 +68,12 @@
                     VOTING IS LIVE — YOU ONLY VOTE ONCE EVERY DAY
                 </div>
                 @endif
+                {{-- Premium upsell --}}
+                <a href="{{ route('premium.show', $competition->slug) }}"
+                   class="mt-3 flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2 hover:opacity-90 transition-opacity"
+                   style="background: rgba(230,176,48,0.15); border: 1px solid rgba(230,176,48,0.4); color: #e6b030;">
+                    ⭐ Go Premium — 10 votes/day
+                </a>
             </div>
             @endif
         </div>
@@ -76,6 +82,24 @@
     {{-- Gold bottom border --}}
     <div class="h-0.5" style="background: linear-gradient(90deg, transparent, #d4941a, #e6b030, #d4941a, transparent);"></div>
 </div>
+
+@if($competition->voting_enabled)
+{{-- Premium upsell sticky banner — always visible below hero --}}
+<div style="background: rgba(13,13,43,0.97); border-bottom: 1px solid rgba(230,176,48,0.18);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-2 text-sm">
+            <span>⭐</span>
+            <span class="text-white font-semibold">Premium:</span>
+            <span class="text-gray-400">Cast <strong class="text-amber-400">10 votes/day</strong> across any contestant — one-time UGX {{ number_format((int)env('PREMIUM_PRICE', 50000)) }}</span>
+        </div>
+        <a href="{{ route('premium.show', $competition->slug) }}"
+           class="text-xs font-bold tracking-widest uppercase px-4 py-2 hover:opacity-90 transition-opacity flex-shrink-0"
+           style="background: linear-gradient(135deg, #d4941a, #e6b030); color: #0d0d2b;">
+            Unlock Premium
+        </a>
+    </div>
+</div>
+@endif
 
 {{-- FILTERS & SEARCH --}}
 <div class="bg-white border-b border-gray-100 sticky top-20 z-30">
@@ -90,7 +114,7 @@
             <select x-model="sortBy" @change="sortContestants()" class="px-4 py-2.5 text-sm border border-gray-200 focus:border-amber-400 outline-none">
                 <option value="votes">Sort by Most Votes</option>
                 <option value="name">Sort by Name</option>
-                <option value="parish">Sort by Parish</option>
+                <option value="county">Sort by County</option>
             </select>
             <div class="text-sm text-gray-500">
                 Showing <span x-text="filtered.length" class="font-semibold">{{ $contestants->count() }}</span> contestants
@@ -143,7 +167,7 @@
         {{-- Contestants Grid --}}
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5" id="contestants-grid">
             @foreach($contestants as $index => $contestant)
-            <div class="contestant-card-wrapper" data-name="{{ strtolower($contestant->full_name) }}" data-parish="{{ strtolower($contestant->parish->name ?? '') }}" data-votes="{{ $contestant->total_votes }}">
+            <div class="contestant-card-wrapper" data-name="{{ strtolower($contestant->full_name) }}" data-county="{{ strtolower($contestant->county->name ?? '') }}" data-votes="{{ $contestant->total_votes }}">
                 <div class="contestant-card bg-white overflow-hidden cursor-pointer"
                      @click="openContestant({{ $contestant->id }})">
 
@@ -178,8 +202,8 @@
                     {{-- Card Info --}}
                     <div class="p-3">
                         <h3 class="font-semibold text-gray-900 text-sm truncate" style="font-family: 'Cormorant Garamond', serif; font-size: 1rem;">{{ $contestant->full_name }}</h3>
-                        @if($contestant->parish)
-                            <p class="text-xs text-gray-500 truncate">{{ $contestant->parish->name }}</p>
+                        @if($contestant->county)
+                            <p class="text-xs text-gray-500 truncate">{{ $contestant->county->name }}</p>
                         @endif
                         {{-- Progress bar --}}
                         @if($competition->total_votes > 0)
@@ -204,6 +228,12 @@
                             Vote
                         @endif
                     </button>
+                    {{-- Boost button --}}
+                    <a href="{{ route('boost.show', $contestant->id) }}"
+                       class="block w-full py-2 text-xs font-semibold tracking-widest uppercase text-center transition-all hover:opacity-80"
+                       style="background: rgba(13,13,43,0.06); color: #d4941a; border-top: 1px solid rgba(212,148,26,0.2);">
+                        &#128640; Boost
+                    </a>
                     @else
                     <div class="w-full py-3 text-xs font-bold tracking-widest uppercase text-center text-gray-400 bg-gray-50">
                         Voting Closed
@@ -250,7 +280,7 @@
                     <div class="absolute inset-0 flex items-end p-6" style="background: linear-gradient(to top, rgba(13,13,43,0.8), transparent);">
                         <div>
                             <h2 class="text-3xl font-light text-white" style="font-family: 'Cormorant Garamond', serif;" x-text="selectedContestant.full_name"></h2>
-                            <p class="text-gray-300 text-sm" x-text="selectedContestant.parish_name"></p>
+                            <p class="text-gray-300 text-sm" x-text="selectedContestant.county_name"></p>
                         </div>
                     </div>
                     {{-- Rank --}}
@@ -308,9 +338,9 @@
 
                     {{-- Already voted notification --}}
                     <div x-show="isLoggedIn && hasVotedToday" class="p-4 text-center border" style="background: #f0fdf4; border-color: #86efac;">
-                        <div class="text-3xl mb-2">&#x1F389;</div>
-                        <p class="font-semibold text-green-800 text-sm">You Already Voted Today!</p>
-                        <p class="text-green-600 text-xs mt-1">You can vote again tomorrow. Come back at midnight.</p>
+                        <div class="text-3xl mb-2" x-text="isPremiumUser ? '⭐' : '🎉'"></div>
+                        <p class="font-semibold text-green-800 text-sm" x-text="isPremiumUser ? 'Daily Limit Reached' : 'You Already Voted Today!'"></p>
+                        <p class="text-green-600 text-xs mt-1" x-text="isPremiumUser ? 'All 10 premium votes used today. Come back tomorrow!' : 'You can vote again tomorrow. Come back at midnight.'"></p>
                     </div>
 
                     {{-- Vote button --}}
@@ -319,10 +349,26 @@
                                 :disabled="voting"
                                 class="w-full py-4 text-sm font-bold tracking-widest uppercase transition-all duration-200 hover:opacity-90 disabled:opacity-50 active:scale-95"
                                 style="background: linear-gradient(135deg, #d4941a, #e6b030); color: #0d0d2b;">
-                            <span x-show="!voting">&#128077; Vote for <span x-text="selectedContestant.full_name.split(' ')[0]"></span></span>
+                            <span x-show="!voting">
+                                <span x-show="isPremiumUser">⭐ Premium Vote — <span x-text="selectedContestant.full_name.split(' ')[0]"></span></span>
+                                <span x-show="!isPremiumUser">👍 Vote for <span x-text="selectedContestant.full_name.split(' ')[0]"></span></span>
+                            </span>
                             <span x-show="voting">Casting vote...</span>
                         </button>
-                        <p class="text-xs text-center text-gray-400 mt-2">One vote per contestant per day</p>
+                        <p class="text-xs text-center text-gray-400 mt-2">
+                            <span x-show="isPremiumUser" x-text="'⭐ Premium: ' + dailyVotesUsed + '/10 votes used today'"></span>
+                            <span x-show="!isPremiumUser">One free vote per contestant per day</span>
+                        </p>
+                    </div>
+
+                    {{-- Boost CTA in modal --}}
+                    <div x-show="votingEnabled" class="mt-3">
+                        <a :href="boostBaseUrl + selectedContestant.id"
+                           @click.stop
+                           class="flex items-center justify-center gap-2 w-full py-3 text-xs font-semibold tracking-widest uppercase transition-all hover:opacity-90 border"
+                           style="border-color: rgba(212,148,26,0.4); color: #d4941a; background: rgba(212,148,26,0.06);">
+                            🚀 Boost — add votes instantly (UGX 1,100/vote)
+                        </a>
                     </div>
 
                     {{-- Share --}}
@@ -371,8 +417,8 @@ $contestantsJson = $contestants->values()->map(function($c, $i) {
         'bio'         => $c->biography,
         'total_votes' => $c->total_votes,
         'photo_url'   => $c->profile_photo ? asset($c->profile_photo) : null,
-        'parish_name' => $c->parish?->name ?? '',
-        'region_name' => $c->parish?->region?->name ?? '',
+        'county_name' => $c->county?->name ?? '',
+        'region_name' => $c->county?->region?->name ?? '',
         'rank'        => $i + 1,
     ];
 });
@@ -382,8 +428,24 @@ const contestants = @json($contestantsJson);
 const isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
 const votedToday = @json(auth()->check() ? auth()->user()->votes()->where('competition_id', $competition->id)->where('vote_date', now()->toDateString())->pluck('contestant_id') : []);
 const votingEnabled = {{ $competition->voting_enabled ? 'true' : 'false' }};
+@php
+$isPremiumUser = auth()->check() ? \App\Models\VoteOrder::where('user_id', auth()->id())
+    ->where('competition_id', $competition->id)
+    ->where('order_type', 'premium_subscription')
+    ->where('payment_status', 'completed')
+    ->where('subscription_starts_at', '<=', now())
+    ->where('subscription_expires_at', '>=', now())
+    ->exists() : false;
+$dailyVotesUsedCount = auth()->check() ? \App\Models\Vote::where('user_id', auth()->id())
+    ->where('competition_id', $competition->id)
+    ->whereDate('vote_date', now()->toDateString())
+    ->count() : 0;
+@endphp
+const isPremiumUser = {{ $isPremiumUser ? 'true' : 'false' }};
+let dailyVotesUsed = {{ $dailyVotesUsedCount }};
 const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 const voteBaseUrl = '{{ url('/vote') }}/';
+const boostBaseUrl = '{{ url('/boost') }}/';
 const currentPageUrl = encodeURIComponent(window.location.href);
 const googleLoginUrl = '{{ route('social.redirect', 'google') }}?intended=' + currentPageUrl;
 const facebookLoginUrl = '{{ route('social.redirect', 'facebook') }}?intended=' + currentPageUrl;
@@ -397,6 +459,7 @@ function votingPage() {
         voting: false,
         isLoggedIn: isLoggedIn,
         votingEnabled: votingEnabled,
+        isPremiumUser: isPremiumUser,
         searchQuery: '',
         sortBy: 'votes',
         filtered: contestants,
@@ -412,7 +475,11 @@ function votingPage() {
             const c = contestants.find(c => c.id === id);
             if (!c) return;
             this.selectedContestant = c;
-            this.hasVotedToday = votedToday.includes(id);
+            if (isPremiumUser) {
+                this.hasVotedToday = dailyVotesUsed >= 10;
+            } else {
+                this.hasVotedToday = votedToday.includes(id);
+            }
             this.modalOpen = true;
         },
 
@@ -427,10 +494,18 @@ function votingPage() {
                 const data = await res.json();
                 if (data.success) {
                     this.selectedContestant.total_votes = data.vote_count;
-                    this.hasVotedToday = true;
-                    votedToday.push(this.selectedContestant.id);
-                    this.showNotification('success', '🎉 Vote Cast Successfully!', 'You can vote again tomorrow.');
-                    setTimeout(() => this.modalOpen = false, 2000);
+                    if (isPremiumUser) {
+                        dailyVotesUsed++;
+                        this.hasVotedToday = dailyVotesUsed >= 10;
+                        const remaining = 10 - dailyVotesUsed;
+                        const sub = remaining > 0 ? remaining + ' premium votes left today' : 'Daily limit reached. Back tomorrow!';
+                        this.showNotification('success', '⭐ Premium Vote Cast!', sub);
+                    } else {
+                        this.hasVotedToday = true;
+                        votedToday.push(this.selectedContestant.id);
+                        this.showNotification('success', '🎉 Vote Cast Successfully!', 'You can vote again tomorrow.');
+                    }
+                    if (this.hasVotedToday) setTimeout(() => this.modalOpen = false, 2000);
                 } else {
                     this.showNotification('error', data.message, '');
                 }
@@ -449,7 +524,7 @@ function votingPage() {
             const q = this.searchQuery.toLowerCase();
             this.filtered = contestants.filter(c =>
                 c.full_name.toLowerCase().includes(q) ||
-                c.parish_name.toLowerCase().includes(q)
+                c.county_name.toLowerCase().includes(q)
             );
         },
 
@@ -457,7 +532,7 @@ function votingPage() {
             this.filtered.sort((a, b) => {
                 if (this.sortBy === 'votes') return b.total_votes - a.total_votes;
                 if (this.sortBy === 'name') return a.full_name.localeCompare(b.full_name);
-                if (this.sortBy === 'parish') return a.parish_name.localeCompare(b.parish_name);
+                if (this.sortBy === 'county') return a.county_name.localeCompare(b.county_name);
                 return 0;
             });
         },

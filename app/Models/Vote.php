@@ -19,6 +19,8 @@ class Vote extends Model
         'voted_at',
         'status',
         'fraud_notes',
+        'vote_source',
+        'vote_order_id',
     ];
 
     protected function casts(): array
@@ -80,6 +82,14 @@ class Vote extends Model
     public function round()
     {
         return $this->belongsTo(Round::class);
+    }
+
+    /**
+     * Get the vote order that generated this vote (premium votes).
+     */
+    public function voteOrder()
+    {
+        return $this->belongsTo(VoteOrder::class, 'vote_order_id');
     }
 
     /**

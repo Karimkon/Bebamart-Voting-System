@@ -8,8 +8,8 @@ class CompetitionSetting extends Model
 {
     protected $fillable = [
         'competition_id',
-        'number_of_parishes',
-        'contestants_per_parish',
+        'number_of_counties',
+        'contestants_per_county',
         'number_of_rounds',
         'votes_per_user_per_day',
         'votes_per_contestant_per_day',
@@ -22,8 +22,8 @@ class CompetitionSetting extends Model
     protected function casts(): array
     {
         return [
-            'number_of_parishes' => 'integer',
-            'contestants_per_parish' => 'integer',
+            'number_of_counties' => 'integer',
+            'contestants_per_county' => 'integer',
             'number_of_rounds' => 'integer',
             'votes_per_user_per_day' => 'integer',
             'votes_per_contestant_per_day' => 'integer',
@@ -47,7 +47,7 @@ class CompetitionSetting extends Model
      */
     public function getTotalContestantsAttribute()
     {
-        return $this->number_of_parishes * $this->contestants_per_parish;
+        return $this->number_of_counties * $this->contestants_per_county;
     }
 
     /**

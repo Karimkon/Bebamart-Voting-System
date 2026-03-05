@@ -104,7 +104,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500">Rank</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500">Contestant</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500 hidden md:table-cell">Parish/Region</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500 hidden md:table-cell">County/Region</th>
                             <th class="px-6 py-3 text-right text-xs font-semibold tracking-widest uppercase text-gray-500">Votes</th>
                             <th class="px-6 py-3 text-right text-xs font-semibold tracking-widest uppercase text-gray-500 hidden sm:table-cell">Share</th>
                         </tr>
@@ -138,9 +138,9 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500 hidden md:table-cell">
-                                {{ $contestant->parish?->name ?? '—' }}
-                                @if($contestant->parish?->region)
-                                    <span class="text-gray-400">· {{ $contestant->parish->region->name }}</span>
+                                {{ $contestant->county?->name ?? '—' }}
+                                @if($contestant->county?->region)
+                                    <span class="text-gray-400">· {{ $contestant->county->region->name }}</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-right">

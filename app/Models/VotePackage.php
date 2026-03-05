@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class VotePackage extends Model
+{
+    protected $fillable = [
+        'name',
+        'votes_count',
+        'price',
+        'currency',
+        'description',
+        'is_popular',
+        'is_active',
+        'sort_order',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_popular' => 'boolean',
+            'is_active'  => 'boolean',
+        ];
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true)->orderBy('sort_order');
+    }
+
+    public function getFormattedPriceAttribute(): string
+    {
+        return 'UGX ' . number_format($this->price);
+    }
+}

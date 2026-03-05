@@ -83,28 +83,28 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Number of Parishes/Districts <span class="text-red-500">*</span></label>
-                    <input type="number" name="number_of_parishes" value="{{ old('number_of_parishes', 53) }}" required min="1"
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Number of Countyes/Districts <span class="text-red-500">*</span></label>
+                    <input type="number" name="number_of_counties" value="{{ old('number_of_counties', 53) }}" required min="1"
                            class="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-[#d4941a] transition-colors">
                     <p class="text-xs text-gray-400 mt-1">Uganda has 146 districts, or customize for your competition</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Contestants per Parish <span class="text-red-500">*</span></label>
-                    <input type="number" name="contestants_per_parish" value="{{ old('contestants_per_parish', 3) }}" required min="1"
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Contestants per County <span class="text-red-500">*</span></label>
+                    <input type="number" name="contestants_per_county" value="{{ old('contestants_per_county', 3) }}" required min="1"
                            class="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-[#d4941a] transition-colors">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Number of Rounds <span class="text-red-500">*</span></label>
                     <input type="number" name="number_of_rounds" value="{{ old('number_of_rounds', 3) }}" required min="1"
                            class="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-[#d4941a] transition-colors">
-                    <p class="text-xs text-gray-400 mt-1">e.g. 3 rounds: Parish → Regional → National</p>
+                    <p class="text-xs text-gray-400 mt-1">e.g. 3 rounds: County → Regional → National</p>
                 </div>
             </div>
 
             <div class="mt-4 p-3 bg-gray-50 border border-gray-100 text-xs text-gray-600">
                 <strong>Auto-calculated:</strong>
-                Total contestants = parishes × contestants per parish.
-                With the values above: <strong id="totalCalc">{{ old('number_of_parishes', 53) * old('contestants_per_parish', 3) }}</strong> contestants.
+                Total contestants = counties × contestants per county.
+                With the values above: <strong id="totalCalc">{{ old('number_of_counties', 53) * old('contestants_per_county', 3) }}</strong> contestants.
             </div>
         </div>
 
@@ -123,12 +123,12 @@
 
 @push('scripts')
 <script>
-    const parishes = document.querySelector('[name="number_of_parishes"]');
-    const perParish = document.querySelector('[name="contestants_per_parish"]');
+    const counties = document.querySelector('[name="number_of_counties"]');
+    const perCounty = document.querySelector('[name="contestants_per_county"]');
     const calc = document.getElementById('totalCalc');
-    function update() { calc.textContent = (parseInt(parishes.value)||0) * (parseInt(perParish.value)||0); }
-    parishes.addEventListener('input', update);
-    perParish.addEventListener('input', update);
+    function update() { calc.textContent = (parseInt(counties.value)||0) * (parseInt(perCounty.value)||0); }
+    counties.addEventListener('input', update);
+    perCounty.addEventListener('input', update);
 </script>
 @endpush
 

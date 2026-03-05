@@ -56,12 +56,12 @@
                     <dd class="font-medium">{{ $contestant->age ?? '—' }}</dd>
                 </div>
                 <div class="flex justify-between text-sm">
-                    <dt class="text-gray-500">Parish</dt>
-                    <dd class="font-medium text-right">{{ $contestant->parish?->name ?? '—' }}</dd>
+                    <dt class="text-gray-500">County</dt>
+                    <dd class="font-medium text-right">{{ $contestant->county?->name ?? '—' }}</dd>
                 </div>
                 <div class="flex justify-between text-sm">
                     <dt class="text-gray-500">Region</dt>
-                    <dd class="font-medium">{{ $contestant->parish?->region?->name ?? '—' }}</dd>
+                    <dd class="font-medium">{{ $contestant->county?->region?->name ?? '—' }}</dd>
                 </div>
                 <div class="flex justify-between text-sm">
                     <dt class="text-gray-500">Competition</dt>

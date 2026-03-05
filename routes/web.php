@@ -8,6 +8,11 @@ use App\Http\Controllers\Admin\ContestantController;
 use App\Http\Controllers\Admin\VotesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Public\VotingController;
+use App\Http\Controllers\Public\VoteBoostController;
+use App\Http\Controllers\Public\PremiumController;
+use App\Http\Controllers\Public\PesapalController;
+use App\Http\Controllers\Admin\VotePackageController;
+use App\Http\Controllers\Admin\VoteOrdersController;
 use App\Models\Competition;
 use App\Models\Vote;
 use App\Models\User;
@@ -60,11 +65,23 @@ Route::post('/admin/login', function (\Illuminate\Http\Request $request) {
     return back()->withErrors(['email' => 'Invalid email or password.'])->onlyInput('email');
 })->name('admin.login.post')->middleware('guest');
 
+// Pesapal callbacks (no auth, no CSRF — excluded in bootstrap/app.php)
+Route::get('/pesapal/callback', [PesapalController::class, 'callback'])->name('pesapal.callback');
+Route::get('/pesapal/ipn', [PesapalController::class, 'ipn'])->name('pesapal.ipn');
+
+// Public — Boost & Premium (show pages are public, POST requires auth)
+Route::get('/boost/{contestant}', [VoteBoostController::class, 'show'])->name('boost.show');
+Route::get('/premium/{competition:slug}', [PremiumController::class, 'show'])->name('premium.show');
+
 // Protected User Routes
 Route::middleware(['auth'])->group(function () {
     // Voting — rate limited: 10 vote attempts per minute per user
     Route::post('/vote/{contestant}', [VotingController::class, 'vote'])->name('vote')->middleware('throttle:10,1');
     Route::get('/vote-status/{contestant}', [VotingController::class, 'voteStatus'])->name('vote.status');
+
+    // Paid features (auth required to initiate payment)
+    Route::post('/boost/{contestant}', [VoteBoostController::class, 'initiate'])->name('boost.initiate');
+    Route::post('/premium/{competition:slug}', [PremiumController::class, 'initiate'])->name('premium.initiate');
 });
 
 // Admin Routes
@@ -88,6 +105,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::post('/users/{user}/toggle-active', [UsersController::class, 'toggleActive'])->name('users.toggle-active');
     Route::post('/users/{user}/role', [UsersController::class, 'updateRole'])->name('users.role');
+
+    // Vote Packages (admin CRUD)
+    Route::resource('vote-packages', VotePackageController::class)->except(['show']);
+
+    // Revenue / Orders
+    Route::get('/vote-orders', [VoteOrdersController::class, 'index'])->name('vote-orders.index');
 });
 
 // Public - Competitions listing

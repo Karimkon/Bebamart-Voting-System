@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\Vote;
 use App\Models\VoteLog;
+use App\Models\VoteOrder;
 use App\Models\Contestant;
 use App\Models\Competition;
 use Illuminate\Http\Request;
@@ -43,17 +44,41 @@ class VotingController extends Controller
             ], 403);
         }
 
-        // Check if user already voted for this contestant today
-        $existingVote = Vote::where('user_id', $user->id)
-            ->where('contestant_id', $contestant->id)
-            ->where('vote_date', now()->toDateString())
-            ->first();
+        // Check premium subscription
+        $hasPremium = VoteOrder::where('user_id', $user->id)
+            ->where('competition_id', $competition->id)
+            ->where('order_type', 'premium_subscription')
+            ->where('payment_status', 'completed')
+            ->where('subscription_starts_at', '<=', now())
+            ->where('subscription_expires_at', '>=', now())
+            ->exists();
 
-        if ($existingVote) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You have already voted for this contestant today',
-            ], 403);
+        $dailyVoteCount = Vote::where('user_id', $user->id)
+            ->where('competition_id', $competition->id)
+            ->whereDate('vote_date', now()->toDateString())
+            ->count();
+
+        if ($hasPremium) {
+            // Premium: up to 10 total votes per day across all contestants
+            if ($dailyVoteCount >= 10) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Daily premium vote limit (10) reached. Come back tomorrow!',
+                ], 403);
+            }
+        } else {
+            // Free: 1 vote per contestant per day
+            $existingVote = Vote::where('user_id', $user->id)
+                ->where('contestant_id', $contestant->id)
+                ->whereDate('vote_date', now()->toDateString())
+                ->first();
+
+            if ($existingVote) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You have already voted for this contestant today',
+                ], 403);
+            }
         }
 
         // Get IP and device info
@@ -71,14 +96,15 @@ class VotingController extends Controller
             DB::beginTransaction();
 
             $vote = Vote::create([
-                'user_id' => $user->id,
-                'contestant_id' => $contestant->id,
+                'user_id'        => $user->id,
+                'contestant_id'  => $contestant->id,
                 'competition_id' => $competition->id,
-                'round_id' => $contestant->current_round_id,
-                'ip_address' => $ipAddress,
-                'device_hash' => $deviceHash,
-                'user_agent' => $userAgent,
-                'status' => $voteStatus,
+                'round_id'       => $contestant->current_round_id,
+                'ip_address'     => $ipAddress,
+                'device_hash'    => $deviceHash,
+                'user_agent'     => $userAgent,
+                'status'         => $voteStatus,
+                'vote_source'    => $hasPremium ? 'premium' : 'free',
             ]);
 
             // Increment contestant votes (only for valid votes)
@@ -171,15 +197,40 @@ class VotingController extends Controller
             ]);
         }
 
-        $hasVotedToday = Vote::where('user_id', auth()->id())
-            ->where('contestant_id', $contestant->id)
-            ->whereDate('vote_date', now()->toDateString())
+        $userId      = auth()->id();
+        $competition = $contestant->competition;
+
+        $hasPremium = VoteOrder::where('user_id', $userId)
+            ->where('competition_id', $competition->id)
+            ->where('order_type', 'premium_subscription')
+            ->where('payment_status', 'completed')
+            ->where('subscription_starts_at', '<=', now())
+            ->where('subscription_expires_at', '>=', now())
             ->exists();
 
+        $dailyVoteCount = Vote::where('user_id', $userId)
+            ->where('competition_id', $competition->id)
+            ->whereDate('vote_date', now()->toDateString())
+            ->count();
+
+        if ($hasPremium) {
+            $hasVotedToday = $dailyVoteCount >= 10;
+            $canVote       = !$hasVotedToday;
+        } else {
+            $hasVotedToday = Vote::where('user_id', $userId)
+                ->where('contestant_id', $contestant->id)
+                ->whereDate('vote_date', now()->toDateString())
+                ->exists();
+            $canVote = !$hasVotedToday;
+        }
+
         return response()->json([
-            'can_vote' => !$hasVotedToday,
+            'can_vote'        => $canVote,
             'has_voted_today' => $hasVotedToday,
-            'vote_count' => $contestant->total_votes,
+            'vote_count'      => $contestant->total_votes,
+            'is_premium'      => $hasPremium,
+            'daily_votes_used'=> $dailyVoteCount,
+            'daily_vote_limit'=> $hasPremium ? 10 : 1,
         ]);
     }
 }

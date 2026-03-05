@@ -117,16 +117,16 @@
             <h3 class="font-semibold text-gray-900 mb-4">Competition Settings</h3>
             <dl class="space-y-3">
                 <div class="flex justify-between text-sm">
-                    <dt class="text-gray-500">Parishes</dt>
-                    <dd class="font-medium">{{ $competition->settings->number_of_parishes }}</dd>
+                    <dt class="text-gray-500">Countyes</dt>
+                    <dd class="font-medium">{{ $competition->settings->number_of_counties }}</dd>
                 </div>
                 <div class="flex justify-between text-sm">
-                    <dt class="text-gray-500">Per Parish</dt>
-                    <dd class="font-medium">{{ $competition->settings->contestants_per_parish }}</dd>
+                    <dt class="text-gray-500">Per County</dt>
+                    <dd class="font-medium">{{ $competition->settings->contestants_per_county }}</dd>
                 </div>
                 <div class="flex justify-between text-sm">
                     <dt class="text-gray-500">Total Expected</dt>
-                    <dd class="font-bold">{{ $competition->settings->number_of_parishes * $competition->settings->contestants_per_parish }}</dd>
+                    <dd class="font-bold">{{ $competition->settings->number_of_counties * $competition->settings->contestants_per_county }}</dd>
                 </div>
                 <div class="flex justify-between text-sm">
                     <dt class="text-gray-500">Votes/Day</dt>
@@ -175,7 +175,7 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-4 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500">Contestant</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500 hidden md:table-cell">Parish</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500 hidden md:table-cell">County</th>
                             <th class="px-4 py-3 text-right text-xs font-semibold tracking-widest uppercase text-gray-500">Votes</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500">Status</th>
                             <th class="px-4 py-3 text-right text-xs font-semibold tracking-widest uppercase text-gray-500">Actions</th>
@@ -201,7 +201,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500 hidden md:table-cell">{{ $contestant->parish?->name ?? '—' }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500 hidden md:table-cell">{{ $contestant->county?->name ?? '—' }}</td>
                             <td class="px-4 py-3 text-right font-bold text-gray-900 text-sm">{{ number_format($contestant->total_votes) }}</td>
                             <td class="px-4 py-3">
                                 <span class="px-2 py-0.5 text-xs font-semibold rounded-full

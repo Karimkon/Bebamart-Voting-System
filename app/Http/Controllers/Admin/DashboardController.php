@@ -39,7 +39,7 @@ class DashboardController extends Controller
         $top_contestants = Contestant::active()
             ->topVoted()
             ->take(10)
-            ->with(['competition', 'parish'])
+            ->with(['competition', 'county'])
             ->get();
 
         // Get voting activity (last 7 days)

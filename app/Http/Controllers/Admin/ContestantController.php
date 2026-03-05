@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Contestant;
 use App\Models\Competition;
 use App\Models\Region;
-use App\Models\Parish;
+use App\Models\County;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +15,7 @@ class ContestantController extends Controller
 {
     public function index()
     {
-        $contestants = Contestant::with(['competition', 'parish.region'])
+        $contestants = Contestant::with(['competition', 'county.region'])
             ->latest()
             ->paginate(30);
 
@@ -27,7 +27,7 @@ class ContestantController extends Controller
     public function create()
     {
         $competitions = Competition::orderBy('name')->get(['id', 'name', 'status']);
-        $regions = Region::active()->with('parishes')->orderBy('name')->get();
+        $regions = Region::active()->with('counties')->orderBy('name')->get();
         $selectedCompetitionId = request('competition_id');
 
         return view('admin.contestants.create', compact('competitions', 'regions', 'selectedCompetitionId'));
@@ -36,15 +36,15 @@ class ContestantController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'competition_id' => 'required|exists:competitions,id',
-            'full_name' => 'required|string|max:255',
-            'age' => 'nullable|integer|min:1|max:100',
-            'parish_id' => 'nullable|exists:parishes,id',
-            'biography' => 'nullable|string|max:2000',
-            'talent_description' => 'nullable|string|max:1000',
+            'competition_id'    => 'required|exists:competitions,id',
+            'full_name'         => 'required|string|max:255',
+            'age'               => 'nullable|integer|min:1|max:100',
+            'county_id'         => 'nullable|exists:counties,id',
+            'biography'         => 'nullable|string|max:2000',
+            'talent_description'=> 'nullable|string|max:1000',
             'contestant_number' => 'nullable|string|max:20|unique:contestants,contestant_number',
-            'profile_photo' => 'nullable|image|max:4096',
-            'status' => 'required|in:active,eliminated,qualified,winner',
+            'profile_photo'     => 'nullable|image|max:4096',
+            'status'            => 'required|in:active,eliminated,qualified,winner',
         ]);
 
         if ($request->hasFile('profile_photo')) {
@@ -52,7 +52,6 @@ class ContestantController extends Controller
             $validated['profile_photo'] = 'storage/' . $path;
         }
 
-        // Auto-generate contestant number if not provided (globally unique)
         if (empty($validated['contestant_number'])) {
             $num = Contestant::max(DB::raw('CAST(contestant_number AS UNSIGNED)')) ?? 0;
             do {
@@ -62,10 +61,10 @@ class ContestantController extends Controller
             $validated['contestant_number'] = $candidate;
         }
 
-        if (!empty($validated['parish_id'])) {
-            $parish = Parish::find($validated['parish_id']);
-            if ($parish) {
-                $validated['region_id'] = $parish->region_id;
+        if (!empty($validated['county_id'])) {
+            $county = County::find($validated['county_id']);
+            if ($county) {
+                $validated['region_id'] = $county->region_id;
             }
         }
 
@@ -77,15 +76,15 @@ class ContestantController extends Controller
 
     public function show(Contestant $contestant)
     {
-        $contestant->load(['competition', 'parish.region', 'votes' => fn($q) => $q->latest()->limit(20)]);
+        $contestant->load(['competition', 'county.region', 'votes' => fn($q) => $q->latest()->limit(20)]);
         return view('admin.contestants.show', compact('contestant'));
     }
 
     public function edit(Contestant $contestant)
     {
-        $contestant->load('parish.region');
+        $contestant->load('county.region');
         $competitions = Competition::orderBy('name')->get(['id', 'name']);
-        $regions = Region::active()->with('parishes')->orderBy('name')->get();
+        $regions = Region::active()->with('counties')->orderBy('name')->get();
 
         return view('admin.contestants.edit', compact('contestant', 'competitions', 'regions'));
     }
@@ -93,14 +92,14 @@ class ContestantController extends Controller
     public function update(Request $request, Contestant $contestant)
     {
         $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'age' => 'nullable|integer|min:1|max:100',
-            'parish_id' => 'nullable|exists:parishes,id',
-            'biography' => 'nullable|string|max:2000',
-            'talent_description' => 'nullable|string|max:1000',
+            'full_name'         => 'required|string|max:255',
+            'age'               => 'nullable|integer|min:1|max:100',
+            'county_id'         => 'nullable|exists:counties,id',
+            'biography'         => 'nullable|string|max:2000',
+            'talent_description'=> 'nullable|string|max:1000',
             'contestant_number' => 'nullable|string|max:20|unique:contestants,contestant_number,'.$contestant->id,
-            'profile_photo' => 'nullable|image|max:4096',
-            'status' => 'required|in:active,eliminated,qualified,winner',
+            'profile_photo'     => 'nullable|image|max:4096',
+            'status'            => 'required|in:active,eliminated,qualified,winner',
         ]);
 
         if ($request->hasFile('profile_photo')) {
@@ -112,10 +111,10 @@ class ContestantController extends Controller
             $validated['profile_photo'] = 'storage/' . $path;
         }
 
-        if (!empty($validated['parish_id'])) {
-            $parish = Parish::find($validated['parish_id']);
-            if ($parish) {
-                $validated['region_id'] = $parish->region_id;
+        if (!empty($validated['county_id'])) {
+            $county = County::find($validated['county_id']);
+            if ($county) {
+                $validated['region_id'] = $county->region_id;
             }
         }
 

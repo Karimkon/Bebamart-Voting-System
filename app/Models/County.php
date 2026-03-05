@@ -5,13 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Region extends Model
+class County extends Model
 {
     use SoftDeletes;
+
+    protected $table = 'counties';
 
     protected $fillable = [
         'name',
         'code',
+        'region_id',
+        'district',
         'description',
         'is_active',
     ];
@@ -23,27 +27,23 @@ class Region extends Model
         ];
     }
 
-    /**
-     * Get the counties for the region.
-     */
-    public function counties()
+    public function region()
     {
-        return $this->hasMany(County::class);
+        return $this->belongsTo(Region::class);
     }
 
-    /**
-     * Get the contestants for the region.
-     */
     public function contestants()
     {
-        return $this->hasMany(Contestant::class);
+        return $this->hasMany(Contestant::class, 'county_id');
     }
 
-    /**
-     * Scope a query to only include active regions.
-     */
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function scopeByRegion($query, $regionId)
+    {
+        return $query->where('region_id', $regionId);
     }
 }

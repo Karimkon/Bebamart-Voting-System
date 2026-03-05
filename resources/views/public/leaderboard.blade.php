@@ -106,7 +106,7 @@
                         <tr style="background: #0d0d2b;">
                             <th class="px-6 py-4 text-left text-xs font-semibold tracking-widest uppercase text-gray-300 w-16">Rank</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold tracking-widest uppercase text-gray-300">Contestant</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold tracking-widest uppercase text-gray-300 hidden sm:table-cell">Parish</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold tracking-widest uppercase text-gray-300 hidden sm:table-cell">County</th>
                             <th class="px-6 py-4 text-right text-xs font-semibold tracking-widest uppercase text-gray-300">Votes</th>
                             <th class="px-6 py-4 text-right text-xs font-semibold tracking-widest uppercase text-gray-300 hidden md:table-cell">Share</th>
                         </tr>
@@ -138,7 +138,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 hidden sm:table-cell text-sm text-gray-500">{{ $contestant->parish?->name ?? '—' }}</td>
+                            <td class="px-6 py-4 hidden sm:table-cell text-sm text-gray-500">{{ $contestant->county?->name ?? '—' }}</td>
                             <td class="px-6 py-4 text-right">
                                 <div class="font-bold text-gray-900" style="{{ $rank === 0 ? 'color: #d4941a;' : '' }}">{{ number_format($contestant->total_votes) }}</div>
                                 @if($competition->total_votes > 0)

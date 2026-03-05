@@ -30,7 +30,7 @@
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500">Contestant</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500 hidden md:table-cell">Competition</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500 hidden lg:table-cell">Parish / Region</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500 hidden lg:table-cell">County / Region</th>
                     <th class="px-6 py-3 text-right text-xs font-semibold tracking-widest uppercase text-gray-500">Votes</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold tracking-widest uppercase text-gray-500">Status</th>
                     <th class="px-6 py-3 text-right text-xs font-semibold tracking-widest uppercase text-gray-500">Actions</th>
@@ -60,9 +60,9 @@
                         </a>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500 hidden lg:table-cell">
-                        {{ $contestant->parish?->name ?? '—' }}
-                        @if($contestant->parish?->region)
-                            <span class="text-gray-400">· {{ $contestant->parish->region->name }}</span>
+                        {{ $contestant->county?->name ?? '—' }}
+                        @if($contestant->county?->region)
+                            <span class="text-gray-400">· {{ $contestant->county->region->name }}</span>
                         @endif
                     </td>
                     <td class="px-6 py-4 text-right font-bold text-gray-900 text-sm">{{ number_format($contestant->total_votes) }}</td>
