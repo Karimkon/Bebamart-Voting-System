@@ -94,13 +94,18 @@ class SocialAuthController extends Controller
 
         try {
             $socialUser = Socialite::driver($provider)->user();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return redirect()->route('login')
                 ->with('error', 'Unable to login using ' . ucfirst($provider) . '. Please try again.');
         }
 
         // Find or create user
-        $user = $this->findOrCreateUser($socialUser, $provider);
+        try {
+            $user = $this->findOrCreateUser($socialUser, $provider);
+        } catch (\Throwable $e) {
+            return redirect()->route('login')
+                ->with('error', 'Unable to create user account. Please contact support.');
+        }
 
         if (!$user) {
             return redirect()->route('login')
@@ -116,11 +121,15 @@ class SocialAuthController extends Controller
         // Log the user in
         Auth::login($user, true);
 
-        // Update last login info
-        $user->update([
-            'last_login_at' => now(),
-            'last_login_ip' => request()->ip(),
-        ]);
+        // Update last login info (best-effort)
+        try {
+            $user->update([
+                'last_login_at' => now(),
+                'last_login_ip' => request()->ip(),
+            ]);
+        } catch (\Throwable $e) {
+            // Non-critical — continue even if this fails
+        }
 
         // Redirect based on role
         if ($user->isAdmin()) {

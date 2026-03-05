@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Competition;
 use App\Models\Contestant;
-use App\Models\Parish;
+use App\Models\County;
 
 class CompetitionSeeder extends Seeder
 {
@@ -30,8 +30,8 @@ class CompetitionSeeder extends Seeder
         $competition->settings()->updateOrCreate(
             ['competition_id' => $competition->id],
             [
-                'number_of_parishes' => 4,
-                'contestants_per_parish' => 3,
+                'number_of_counties' => 4,
+                'contestants_per_county' => 3,
                 'number_of_rounds' => 3,
                 'votes_per_user_per_day' => 1,
                 'votes_per_contestant_per_day' => 1,
@@ -39,7 +39,7 @@ class CompetitionSeeder extends Seeder
             ]
         );
 
-        $parishes = Parish::take(12)->get();
+        $counties = County::take(12)->get();
 
         $contestants = [
             ['full_name' => 'Amara Nalubega', 'age' => 22, 'profile_photo' => null, 'biography' => 'Environmental activist and law student from Kampala. Champions youth empowerment and clean energy.'],
@@ -57,13 +57,13 @@ class CompetitionSeeder extends Seeder
         ];
 
         foreach ($contestants as $i => $data) {
-            $parish = $parishes->get($i);
+            $county = $counties->get($i);
             Contestant::updateOrCreate(
                 ['competition_id' => $competition->id, 'full_name' => $data['full_name']],
                 array_merge($data, [
                     'competition_id' => $competition->id,
-                    'parish_id' => $parish?->id,
-                    'region_id' => $parish?->region_id,
+                    'county_id' => $county?->id,
+                    'region_id' => $county?->region_id,
                     'contestant_number' => str_pad($i + 1, 3, '0', STR_PAD_LEFT),
                     'status' => 'active',
                     'total_votes' => rand(100, 3000),
@@ -93,8 +93,8 @@ class CompetitionSeeder extends Seeder
         $comp2->settings()->updateOrCreate(
             ['competition_id' => $comp2->id],
             [
-                'number_of_parishes' => 4,
-                'contestants_per_parish' => 2,
+                'number_of_counties' => 4,
+                'contestants_per_county' => 2,
                 'number_of_rounds' => 2,
                 'votes_per_user_per_day' => 1,
                 'votes_per_contestant_per_day' => 1,

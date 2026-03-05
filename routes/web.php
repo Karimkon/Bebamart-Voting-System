@@ -125,7 +125,7 @@ Route::get('/competitions/{slug}', function ($slug) {
     $competition = Competition::where('slug', $slug)->firstOrFail();
     // Show all contestants (not just active) so results are visible when voting is closed
     $contestants = $competition->contestants()
-        ->with(['parish.region'])
+        ->with(['county.region'])
         ->orderBy('total_votes', 'desc')
         ->get();
     return view('public.competitions.show', compact('competition', 'contestants'));
@@ -134,7 +134,7 @@ Route::get('/competitions/{slug}', function ($slug) {
 // Public - Leaderboard
 Route::get('/leaderboard', function () {
     $competitions = Competition::where('status', 'active')->with(['contestants' => function($q) {
-        $q->where('status', 'active')->orderBy('total_votes', 'desc')->limit(10)->with('parish');
+        $q->where('status', 'active')->orderBy('total_votes', 'desc')->limit(10)->with('county');
     }])->get();
     return view('public.leaderboard', compact('competitions'));
 })->name('leaderboard');
@@ -162,6 +162,6 @@ Route::get('/archive', function () {
 
 Route::get('/archive/{slug}', function ($slug) {
     $competition = Competition::where('slug', $slug)->firstOrFail();
-    $contestants = $competition->contestants()->orderBy('total_votes', 'desc')->with('parish')->get();
+    $contestants = $competition->contestants()->orderBy('total_votes', 'desc')->with('county')->get();
     return view('public.archive-show', compact('competition', 'contestants'));
 })->name('archive.show');

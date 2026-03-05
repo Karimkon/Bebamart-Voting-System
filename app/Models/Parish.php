@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @deprecated Use County instead. Kept as alias because parishes table was renamed to counties.
+ */
 class Parish extends Model
 {
     use SoftDeletes;
+
+    protected $table = 'counties'; // table was renamed from parishes
 
     protected $fillable = [
         'name',
