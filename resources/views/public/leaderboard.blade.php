@@ -51,8 +51,8 @@
                 @if($competition->contestants->count() > 1)
                 <div class="text-center pt-4">
                     <div class="relative inline-block mb-3">
-                        @if($competition->contestants[1]->photo)
-                            <img src="{{ Storage::url($competition->contestants[1]->photo) }}" class="w-20 h-20 rounded-full object-cover mx-auto border-4 border-gray-300">
+                        @if($competition->contestants[1]->profile_photo)
+                            <img src="{{ asset($competition->contestants[1]->profile_photo) }}" class="w-20 h-20 rounded-full object-cover mx-auto border-4 border-gray-300">
                         @else
                             <div class="w-20 h-20 rounded-full mx-auto border-4 border-gray-300 flex items-center justify-center text-xl font-bold text-gray-400" style="background: #f3f4f6;">{{ substr($competition->contestants[1]->full_name, 0, 1) }}</div>
                         @endif
@@ -68,8 +68,8 @@
                 <div class="text-center">
                     <div class="text-3xl mb-1">&#x1F451;</div>
                     <div class="relative inline-block mb-3">
-                        @if($competition->contestants[0]->photo)
-                            <img src="{{ Storage::url($competition->contestants[0]->photo) }}" class="w-24 h-24 rounded-full object-cover mx-auto border-4" style="border-color: #d4941a;">
+                        @if($competition->contestants[0]->profile_photo)
+                            <img src="{{ asset($competition->contestants[0]->profile_photo) }}" class="w-24 h-24 rounded-full object-cover mx-auto border-4" style="border-color: #d4941a;">
                         @else
                             <div class="w-24 h-24 rounded-full mx-auto border-4 flex items-center justify-center text-2xl font-bold" style="border-color: #d4941a; background: #faf0d7; color: #d4941a;">{{ substr($competition->contestants[0]->full_name, 0, 1) }}</div>
                         @endif
@@ -84,8 +84,8 @@
                 @if($competition->contestants->count() > 2)
                 <div class="text-center pt-8">
                     <div class="relative inline-block mb-3">
-                        @if($competition->contestants[2]->photo)
-                            <img src="{{ Storage::url($competition->contestants[2]->photo) }}" class="w-18 h-18 rounded-full object-cover mx-auto border-4 border-amber-700">
+                        @if($competition->contestants[2]->profile_photo)
+                            <img src="{{ asset($competition->contestants[2]->profile_photo) }}" class="w-18 h-18 rounded-full object-cover mx-auto border-4 border-amber-700">
                         @else
                             <div class="w-16 h-16 rounded-full mx-auto border-4 border-amber-700 flex items-center justify-center text-lg font-bold text-amber-700" style="background: #fef3c7;">{{ substr($competition->contestants[2]->full_name, 0, 1) }}</div>
                         @endif
@@ -127,8 +127,8 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    @if($contestant->photo)
-                                        <img src="{{ Storage::url($contestant->photo) }}" class="w-10 h-10 rounded-full object-cover border-2" style="border-color: {{ $rank === 0 ? '#d4941a' : '#e5e7eb' }};">
+                                    @if($contestant->profile_photo)
+                                        <img src="{{ asset($contestant->profile_photo) }}" class="w-10 h-10 rounded-full object-cover border-2" style="border-color: {{ $rank === 0 ? '#d4941a' : '#e5e7eb' }};">
                                     @else
                                         <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background: #1a1a4e;">{{ substr($contestant->full_name, 0, 1) }}</div>
                                     @endif

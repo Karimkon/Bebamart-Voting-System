@@ -181,8 +181,8 @@
 
                         {{-- Photo --}}
                         <div class="aspect-[3/4] overflow-hidden" style="background: linear-gradient(135deg, #0d0d2b, #1a1a4e);">
-                            @if($contestant->photo)
-                                <img src="{{ Storage::url($contestant->photo) }}" alt="{{ $contestant->full_name }}"
+                            @if($contestant->profile_photo)
+                                <img src="{{ asset($contestant->profile_photo) }}" alt="{{ $contestant->full_name }}"
                                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             @else
                                 <div class="w-full h-full flex items-center justify-center">

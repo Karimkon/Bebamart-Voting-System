@@ -158,7 +158,8 @@ class SocialAuthController extends Controller
         $providerName = str_replace('-oauth-2', '', $provider);
 
         // Truncate token — OAuth tokens can exceed VARCHAR(255) and crash MySQL strict mode
-        $token = $socialUser->token ? substr($socialUser->token, 0, 500) : null;
+        // Limit to 250 until the TEXT migration runs; harmless after migration
+        $token = $socialUser->token ? substr($socialUser->token, 0, 250) : null;
 
         // Check if user exists with this provider ID
         $user = User::where('provider', $providerName)

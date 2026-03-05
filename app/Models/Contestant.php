@@ -97,10 +97,9 @@ class Contestant extends Model
 
     public function getProfilePhotoUrlAttribute()
     {
-        if ($this->profile_photo && file_exists(public_path($this->profile_photo))) {
-            return asset($this->profile_photo);
-        }
-        return asset('images/default-contestant.png');
+        return $this->profile_photo
+            ? asset($this->profile_photo)
+            : asset('images/default-contestant.png');
     }
 
     public function incrementVotes()
