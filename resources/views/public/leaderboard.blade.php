@@ -50,6 +50,12 @@
                 {{-- 2nd Place --}}
                 @if($competition->contestants->count() > 1)
                 <div class="text-center pt-4">
+                    <div class="mb-2" style="animation: crownFloat 2.3s ease-in-out infinite; animation-delay: 0.3s;">
+                    <svg viewBox="0 0 28 20" width="30" height="22" fill="#9ca3af" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto; display: block;">
+                        <path d="M2 18 L2 8 L9 13 L14 2 L19 13 L26 8 L26 18 Z"/>
+                        <circle cx="2" cy="8" r="2.5"/><circle cx="14" cy="2" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
+                    </svg>
+                </div>
                     <div class="relative inline-block mb-3">
                         @if($competition->contestants[1]->profile_photo)
                             <img src="{{ asset($competition->contestants[1]->profile_photo) }}" class="w-20 h-20 rounded-full object-cover mx-auto border-4 border-gray-300">
@@ -66,7 +72,12 @@
 
                 {{-- 1st Place --}}
                 <div class="text-center">
-                    <div class="text-3xl mb-1">&#x1F451;</div>
+<div class="mb-2" style="animation: crownFloat 2s ease-in-out infinite;">
+                    <svg viewBox="0 0 28 20" width="38" height="28" fill="#e6b030" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 6px #e6b030aa); margin: 0 auto; display: block;">
+                        <path d="M2 18 L2 8 L9 13 L14 2 L19 13 L26 8 L26 18 Z"/>
+                        <circle cx="2" cy="8" r="2.5"/><circle cx="14" cy="2" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
+                    </svg>
+                </div>
                     <div class="relative inline-block mb-3">
                         @if($competition->contestants[0]->profile_photo)
                             <img src="{{ asset($competition->contestants[0]->profile_photo) }}" class="w-24 h-24 rounded-full object-cover mx-auto border-4" style="border-color: #d4941a;">
@@ -83,6 +94,12 @@
                 {{-- 3rd Place --}}
                 @if($competition->contestants->count() > 2)
                 <div class="text-center pt-8">
+                    <div class="mb-2" style="animation: crownFloat 2.6s ease-in-out infinite; animation-delay: 0.6s;">
+                    <svg viewBox="0 0 28 20" width="26" height="19" fill="#b45309" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto; display: block;">
+                        <path d="M2 18 L2 8 L9 13 L14 2 L19 13 L26 8 L26 18 Z"/>
+                        <circle cx="2" cy="8" r="2.5"/><circle cx="14" cy="2" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
+                    </svg>
+                </div>
                     <div class="relative inline-block mb-3">
                         @if($competition->contestants[2]->profile_photo)
                             <img src="{{ asset($competition->contestants[2]->profile_photo) }}" class="w-18 h-18 rounded-full object-cover mx-auto border-4 border-amber-700">
@@ -116,11 +133,11 @@
                         <tr class="hover:bg-amber-50/30 transition-colors {{ $rank < 3 ? 'bg-amber-50/20' : '' }}">
                             <td class="px-6 py-4">
                                 @if($rank === 0)
-                                    <span class="text-xl">&#x1F451;</span>
+                                    <svg viewBox="0 0 28 20" width="26" height="19" fill="#e6b030" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 4px #e6b030aa); animation: crownBob 2s ease-in-out infinite; display: inline-block; vertical-align: middle;"><path d="M2 18 L2 8 L9 13 L14 2 L19 13 L26 8 L26 18 Z"/><circle cx="2" cy="8" r="2.5"/><circle cx="14" cy="2" r="2.5"/><circle cx="26" cy="8" r="2.5"/></svg>
                                 @elseif($rank === 1)
-                                    <span class="w-8 h-8 inline-flex items-center justify-center rounded-full text-sm font-bold text-white" style="background: #9ca3af;">2</span>
+                                    <svg viewBox="0 0 28 20" width="22" height="16" fill="#9ca3af" xmlns="http://www.w3.org/2000/svg" style="animation: crownBob 2.3s ease-in-out infinite; animation-delay: 0.3s; display: inline-block; vertical-align: middle;"><path d="M2 18 L2 8 L9 13 L14 2 L19 13 L26 8 L26 18 Z"/><circle cx="2" cy="8" r="2.5"/><circle cx="14" cy="2" r="2.5"/><circle cx="26" cy="8" r="2.5"/></svg>
                                 @elseif($rank === 2)
-                                    <span class="w-8 h-8 inline-flex items-center justify-center rounded-full text-sm font-bold text-white" style="background: #b45309;">3</span>
+                                    <svg viewBox="0 0 28 20" width="20" height="14" fill="#b45309" xmlns="http://www.w3.org/2000/svg" style="animation: crownBob 2.6s ease-in-out infinite; animation-delay: 0.6s; display: inline-block; vertical-align: middle;"><path d="M2 18 L2 8 L9 13 L14 2 L19 13 L26 8 L26 18 Z"/><circle cx="2" cy="8" r="2.5"/><circle cx="14" cy="2" r="2.5"/><circle cx="26" cy="8" r="2.5"/></svg>
                                 @else
                                     <span class="text-gray-500 font-semibold">{{ $rank + 1 }}</span>
                                 @endif
@@ -170,6 +187,16 @@
 </section>
 
 @push('scripts')
+<style>
+@keyframes crownFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+}
+@keyframes crownBob {
+    0%, 100% { transform: translateY(0px) rotate(-5deg); }
+    50% { transform: translateY(-4px) rotate(5deg); }
+}
+</style>
 <script>
 // Auto-refresh leaderboard every 30 seconds
 setTimeout(() => location.reload(), 30000);

@@ -66,11 +66,14 @@ class ContestantController extends Controller
             if ($county) {
                 $validated['region_id'] = $county->region_id;
             }
+        } else {
+            $validated['region_id'] = null;
         }
 
         $contestant = Contestant::create($validated);
 
-        return redirect()->route('admin.competitions.show', $validated['competition_id'])
+        $competition = Competition::find($validated['competition_id']);
+        return redirect()->route('admin.competitions.show', $competition)
             ->with('success', $contestant->full_name . ' added successfully!');
     }
 
@@ -116,6 +119,8 @@ class ContestantController extends Controller
             if ($county) {
                 $validated['region_id'] = $county->region_id;
             }
+        } else {
+            $validated['region_id'] = null;
         }
 
         $contestant->update($validated);
@@ -126,7 +131,7 @@ class ContestantController extends Controller
 
     public function destroy(Contestant $contestant)
     {
-        $competitionId = $contestant->competition_id;
+        $competition = $contestant->competition;
 
         if ($contestant->profile_photo) {
             $path = str_replace('storage/', '', $contestant->profile_photo);
@@ -135,7 +140,7 @@ class ContestantController extends Controller
 
         $contestant->delete();
 
-        return redirect()->route('admin.competitions.show', $competitionId)
+        return redirect()->route('admin.competitions.show', $competition)
             ->with('success', 'Contestant removed.');
     }
 }
