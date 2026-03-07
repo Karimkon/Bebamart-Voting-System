@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Buganda Tourism Board — Africa\'s Premier Voting Platform')
+@section('title', 'Buganda Heritage & Tourism Board — Africa\'s Premier Voting Platform')
 
 @section('content')
 
@@ -13,16 +13,16 @@
     </div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-20">
         <div class="reveal inline-flex items-center gap-2 px-4 py-2 mb-8 border border-white/10 text-xs tracking-widest uppercase text-gray-400" style="background: rgba(255,255,255,0.05);">
-            <span style="color: #e6b030;">&#9733;</span> Presented by Buganda Tourism Board <span style="color: #e6b030;">&#9733;</span>
+            <span style="color: #e6b030;">&#9733;</span> Presented by Buganda Heritage & Tourism Board <span style="color: #e6b030;">&#9733;</span>
         </div>
         <h1 class="reveal reveal-delay-1 text-5xl sm:text-6xl md:text-8xl font-light text-white leading-none tracking-tight mb-6" style="font-family: 'Cormorant Garamond', serif;">
             Vote for
             <span class="block" style="background: linear-gradient(90deg, #d4941a 0%, #f4dda0 50%, #d4941a 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 3s linear infinite;">
-                Africa's Best
+                Buganda's Best
             </span>
         </h1>
         <p class="reveal reveal-delay-2 text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-            Africa's most transparent and secure voting platform for beauty pageants, tourism competitions, talent shows and awards.
+            Buganda's most transparent and secure voting platform for beauty pageants, tourism competitions, talent shows and awards.
         </p>
         <div class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a href="{{ route('competitions.index') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase text-[#0d0d2b] hover:opacity-90 transition-all" style="background: linear-gradient(135deg, #d4941a, #e6b030);">
@@ -231,7 +231,7 @@
 <section class="py-20 text-white" style="background: linear-gradient(135deg, #0d0d2b, #1a1a4e);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-4xl font-light mb-6" style="font-family: 'Cormorant Garamond', serif;">Built on Trust &amp; Transparency</h2>
-        <p class="text-gray-300 max-w-2xl mx-auto mb-12 text-sm leading-relaxed">Every single vote is logged, audited, and publicly verifiable. Buganda Tourism Board is Africa's most transparent voting platform.</p>
+        <p class="text-gray-300 max-w-2xl mx-auto mb-12 text-sm leading-relaxed">Every single vote is logged, audited, and publicly verifiable. Buganda Heritage & Tourism Board is Buganda's most transparent voting platform.</p>
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
             @foreach([['Social Login Only','No anonymous votes'],['IP Monitoring','Fraud detection'],['Device Fingerprint','Multi-account detection'],['Full Audit Trail','Every vote logged'],['1 Vote/Day','Per contestant']] as $t)
             <div class="p-4 border border-white/10 text-center" style="background: rgba(255,255,255,0.05);">
