@@ -12,8 +12,18 @@
         <div class="orb orb-3 w-40 h-40 opacity-[0.04]" style="background: radial-gradient(circle, #e6b030, transparent); top: 50%; left: 65%;"></div>
     </div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-20">
-        <div class="reveal inline-flex items-center gap-2 px-4 py-2 mb-8 border border-white/10 text-xs tracking-widest uppercase text-gray-400" style="background: rgba(255,255,255,0.05);">
+        <div class="reveal inline-flex items-center gap-2 px-4 py-2 mb-4 border border-white/10 text-xs tracking-widest uppercase text-gray-400" style="background: rgba(255,255,255,0.05);">
             <span style="color: #e6b030;">&#9733;</span> Presented by Buganda Heritage & Tourism Board <span style="color: #e6b030;">&#9733;</span>
+        </div>
+        <div class="reveal mb-8">
+            <a href="https://bebamart.com" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-4 py-2 border border-white/10 hover:border-yellow-600/40 transition-all group"
+               style="background: rgba(212,148,26,0.08);">
+                <span class="text-xs text-gray-500 tracking-widest uppercase">Powered by</span>
+                <img src="{{ asset('images/bebalogo.png') }}" alt="BebaMart Global" class="w-6 h-6 rounded-md object-contain">
+                <span class="text-sm font-bold text-white group-hover:underline" style="font-family: 'Montserrat', sans-serif;">BebaMart Global</span>
+                <span class="text-xs tracking-wider" style="color: #e6b030;">bebamart.com</span>
+            </a>
         </div>
         <h1 class="reveal reveal-delay-1 text-5xl sm:text-6xl md:text-8xl font-light text-white leading-none tracking-tight mb-6" style="font-family: 'Cormorant Garamond', serif;">
             Vote for

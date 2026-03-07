@@ -198,7 +198,19 @@
                     <span class="text-white font-bold text-xl" style="font-family: 'Cormorant Garamond', serif;">Buganda Tourism Board</span>
                 </div>
                 <p class="text-gray-400 text-sm leading-relaxed max-w-sm">Africa's most trusted voting platform for beauty pageants, tourism competitions, talent shows and awards. Transparent. Secure. Elegant.</p>
-                <div class="mt-4 text-xs text-gray-500">Sponsored by <span style="color: #e6b030;">BebeMart</span> — Africa's E-Commerce Leader</div>
+
+                {{-- BebaMart Global Branding --}}
+                <div class="mt-6 pt-5 border-t border-white/10">
+                    <div class="text-xs text-gray-500 uppercase tracking-widest mb-3">Powered by</div>
+                    <a href="https://bebamart.com" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-3 group hover:opacity-90 transition-opacity">
+                        <img src="{{ asset('images/bebalogo.png') }}" alt="BebaMart Global" class="w-10 h-10 rounded-xl object-contain flex-shrink-0">
+                        <div>
+                            <div class="text-white font-bold text-base tracking-wide group-hover:underline">BebaMart Global</div>
+                            <div class="text-xs tracking-widest" style="color: #e6b030;">Africa's E-Commerce Leader · bebamart.com</div>
+                        </div>
+                    </a>
+                </div>
             </div>
             <div>
                 <h4 class="text-sm font-semibold tracking-widest uppercase mb-4" style="color: #e6b030;">Platform</h4>
@@ -220,9 +232,17 @@
                 </ul>
             </div>
         </div>
-        <div class="pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
-            <span>© {{ date('Y') }} Buganda Tourism Board™ | Buganda Tourism Board | bugandavotes.com</span>
-            <div class="flex gap-6 mt-4 md:mt-0">
+        <div class="pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+            <span>© {{ date('Y') }} Buganda Tourism Board™ | bugandavotes.com</span>
+            <div class="flex items-center gap-2">
+                <span>Powered by</span>
+                <a href="https://bebamart.com" target="_blank" rel="noopener noreferrer"
+                   class="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
+                    <img src="{{ asset('images/bebalogo.png') }}" alt="BebaMart" class="w-5 h-5 rounded object-contain">
+                    <span style="color: #e6b030;" class="font-semibold">BebaMart Global</span>
+                </a>
+            </div>
+            <div class="flex gap-6">
                 <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
                 <a href="#" class="hover:text-white transition-colors">Terms of Use</a>
                 <a href="#" class="hover:text-white transition-colors">Contact Us</a>
