@@ -46,22 +46,22 @@ class VoteBoostController extends Controller
         $user = auth()->user();
         $ref  = VoteOrder::generateMerchantRef();
 
-        $order = VoteOrder::create([
-            'user_id'         => $user->id,
-            'contestant_id'   => $contestant->id,
-            'competition_id'  => $competition->id,
-            'package_id'      => $packageId,
-            'order_type'      => 'vote_boost',
-            'votes_count'     => $votesCount,
-            'amount'          => $amount,
-            'currency'        => 'UGX',
-            'price_per_vote'  => $pricePerVote,
-            'merchant_reference' => $ref,
-            'payment_status'  => 'pending',
-            'ip_address'      => $request->ip(),
-        ]);
-
         try {
+            $order = VoteOrder::create([
+                'user_id'         => $user->id,
+                'contestant_id'   => $contestant->id,
+                'competition_id'  => $competition->id,
+                'package_id'      => $packageId,
+                'order_type'      => 'vote_boost',
+                'votes_count'     => $votesCount,
+                'amount'          => $amount,
+                'currency'        => 'UGX',
+                'price_per_vote'  => $pricePerVote,
+                'merchant_reference' => $ref,
+                'payment_status'  => 'pending',
+                'ip_address'      => $request->ip(),
+            ]);
+
             $result = $pesapal->submitOrder([
                 'merchant_reference' => $ref,
                 'amount'             => $amount,
@@ -76,9 +76,11 @@ class VoteBoostController extends Controller
 
             return redirect()->away($result['redirect_url']);
         } catch (\Exception $e) {
-            $order->update(['payment_status' => 'failed']);
+            if (isset($order)) {
+                $order->update(['payment_status' => 'failed']);
+            }
             return redirect()->route('boost.show', $contestant)
-                ->with('error', 'Payment initiation failed. Please try again.');
+                ->with('error', 'Payment initiation failed: ' . $e->getMessage());
         }
     }
 }
