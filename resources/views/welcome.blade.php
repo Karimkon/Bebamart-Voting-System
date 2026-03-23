@@ -11,22 +11,31 @@
         <div class="orb orb-2 w-56 h-56 sm:w-72 sm:h-72 opacity-[0.05]" style="background: radial-gradient(circle, #d4941a, transparent); bottom: 18%; right: 12%;"></div>
         <div class="orb orb-3 w-40 h-40 opacity-[0.04]" style="background: radial-gradient(circle, #e6b030, transparent); top: 50%; left: 65%;"></div>
     </div>
+    <style>
+        .hero-side-logo { display: none; position: absolute; top: 50%; transform: translateY(-50%); flex-direction: column; align-items: center; gap: 10px; width: 140px; }
+        .hero-side-logo img { width: 96px; height: 96px; object-fit: contain; border-radius: 16px; }
+        .hero-side-logo span { color: #fff; font-weight: 700; font-size: 12px; text-align: center; font-family: 'Montserrat', sans-serif; line-height: 1.3; }
+        .hero-side-logo .sub { color: #e6b030; font-size: 11px; font-weight: 400; }
+        @media (min-width: 1024px) { .hero-side-logo { display: flex; } }
+        #hero-bebamart-logo { left: 40px; }
+        #hero-buganda-logo  { right: 40px; }
+    </style>
+
+    {{-- LEFT: BebaMart Logo --}}
+    <a id="hero-bebamart-logo" class="hero-side-logo" href="https://bebamart.com" target="_blank" rel="noopener noreferrer">
+        <img src="{{ asset('images/bebalogo.png') }}" alt="BebaMart Global" style="box-shadow: 0 8px 32px rgba(212,148,26,0.3); border: 2px solid rgba(212,148,26,0.3);">
+        <span>BebaMart Global</span>
+        <span class="sub">bebamart.com</span>
+    </a>
+
+    {{-- RIGHT: Buganda Tourism Board Logo --}}
+    <div id="hero-buganda-logo" class="hero-side-logo">
+        <img src="{{ asset('images/buganda.png') }}" alt="Buganda Tourism Board" style="border-radius: 50%; border: 2px solid rgba(230,176,48,0.4);">
+        <span>Buganda Tourism Board</span>
+    </div>
+
     <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-        <div class="flex items-start justify-between gap-4">
-
-            {{-- LEFT: BebaMart Logo --}}
-            <div class="hidden lg:flex flex-col items-center gap-3 w-36 flex-shrink-0 pt-6">
-                <a href="https://bebamart.com" target="_blank" rel="noopener noreferrer"
-                   class="flex flex-col items-center gap-2 group">
-                    <img src="{{ asset('images/bebalogo.png') }}" alt="BebaMart Global"
-                         class="w-24 h-24 rounded-2xl object-contain shadow-2xl ring-2 ring-yellow-600/30 group-hover:ring-yellow-400/60 transition-all">
-                    <span class="text-white font-bold text-sm text-center" style="font-family:'Montserrat',sans-serif;">BebaMart Global</span>
-                    <span class="text-xs tracking-wider" style="color:#e6b030;">bebamart.com</span>
-                </a>
-            </div>
-
-            {{-- CENTER: Hero Content --}}
-            <div class="flex-1 text-center">
+        <div class="text-center">
                 <div class="reveal inline-flex items-center gap-2 px-4 py-2 mb-6 border border-white/10 text-xs tracking-widest uppercase text-gray-400" style="background: rgba(255,255,255,0.05);">
                     <span style="color: #e6b030;">&#9733;</span> Presented by Buganda Heritage & Tourism Board <span style="color: #e6b030;">&#9733;</span>
                 </div>
@@ -61,16 +70,7 @@
             </div>
             @endforeach
         </div>
-            </div>{{-- end center --}}
-
-            {{-- RIGHT: Buganda Tourism Board Logo --}}
-            <div class="hidden lg:flex flex-col items-center gap-3 w-36 flex-shrink-0 pt-6">
-                <img src="{{ asset('images/buganda.png') }}" alt="Buganda Tourism Board"
-                     class="w-24 h-24 object-contain drop-shadow-2xl">
-                <span class="text-white font-bold text-sm text-center leading-tight" style="font-family:'Montserrat',sans-serif;">Buganda Tourism Board</span>
-            </div>
-
-        </div>{{-- end 3-col flex --}}
+        </div>{{-- end text-center --}}
     </div>
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500">
         <span class="text-xs tracking-widest uppercase">Scroll</span>
