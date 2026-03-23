@@ -11,7 +11,7 @@
         <div class="orb orb-2 w-56 h-56 sm:w-72 sm:h-72 opacity-[0.05]" style="background: radial-gradient(circle, #d4941a, transparent); bottom: 18%; right: 12%;"></div>
         <div class="orb orb-3 w-40 h-40 opacity-[0.04]" style="background: radial-gradient(circle, #e6b030, transparent); top: 50%; left: 65%;"></div>
     </div>
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
         <div class="flex items-start justify-between gap-4">
 
             {{-- LEFT: BebaMart Logo --}}
